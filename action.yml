@@ -1,0 +1,27 @@
+name: 'RepoDigest'
+description: 'Generate and email a weekly engineering report from your GitHub activity'
+author: 'RepoDigest'
+
+branding:
+  icon: 'mail'
+  color: 'purple'
+
+inputs:
+  api_key:
+    description: 'Your RepoDigest API key (from repodigest.com/dashboard/settings)'
+    required: true
+  recipients:
+    description: 'Comma-separated list of email addresses to send the report to'
+    required: true
+  lookback_days:
+    description: 'Number of days of activity to include in the report'
+    required: false
+    default: '7'
+  api_url:
+    description: 'RepoDigest API base URL (override for staging/self-hosted)'
+    required: false
+    default: 'https://www.repodigest.com'
+
+runs:
+  using: 'node20'
+  main: 'index.js'
