@@ -1,0 +1,53 @@
+name: Release to GitHub Marketplace
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes "## RepoDigest Action ${{ github.ref_name }}
+
+          Generate and email a weekly engineering report from your GitHub activity.
+
+          ### Usage
+
+          \`\`\`yaml
+          - uses: RepoDigest/repodigest-action@${{ github.ref_name }}
+            with:
+              api_key: \${{ secrets.REPODIGEST_API_KEY }}
+              recipients: \"stakeholder@company.com\"
+          \`\`\`
+
+          See the [README](https://github.com/RepoDigest/repodigest-action#readme) for full documentation." \
+            --verify-tag
+
+      - name: Set repository topics
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api \
+            --method PUT \
+            /repos/RepoDigest/repodigest-action/topics \
+            --field 'names[]=github-actions' \
+            --field 'names[]=engineering-reports' \
+            --field 'names[]=weekly-digest' \
+            --field 'names[]=ai-generated' \
+            --field 'names[]=devtools' \
+            --field 'names[]=developer-tools' \
+            --field 'names[]=stakeholder-reporting' \
+            --field 'names[]=repodigest'
