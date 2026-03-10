@@ -30,7 +30,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: BGannon2/repodigest-action@v1
+      - uses: RepoDigest/repodigest-action@v1
         with:
           api_key: ${{ secrets.REPODIGEST_API_KEY }}
           recipients: "ceo@company.com, investor@fund.com"
